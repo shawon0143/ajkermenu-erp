@@ -1,35 +1,52 @@
-import React, { useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+
+// import axios from "axios";
+// import { Link } from "react-router-dom";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../store/hook";
+import { getLoginLoading } from "../../../store/feature/auth/authSlice";
+import { login } from "../../../store/feature/auth/auth";
 
 const Login = () => {
-  useEffect(() => {
-    var data = JSON.stringify({
-      username: "12345",
-      password: "12345",
-    });
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(getLoginLoading);
 
-    var config = {
-      method: "post",
-      url: "https://ajkermenu.com:8443/api/credentials/login",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Basic Y2hlZjpjaGVm",
-      },
-      data: data,
+  const [inputs, setInputs] = useState({
+    mobile: {
+      value: "",
+      isValid: true,
+    },
+    password: {
+      value: "",
+      isValid: true,
+    },
+  });
+
+  const submitHandler = () => {
+    const loginData = {
+      mobile: inputs.mobile.value,
+      password: inputs.password.value,
     };
 
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
+    const mobileIsValid = loginData.mobile.trim().length > 0;
+    const passIsValid = loginData.password.trim().length > 0;
+    if (!mobileIsValid && !passIsValid) {
+      setInputs((curInputs) => {
+        return {
+          mobile: { value: curInputs.mobile.value, isValid: mobileIsValid },
+          password: { value: curInputs.password.value, isValid: passIsValid },
+        };
       });
-  }, []);
+      return;
+    }
+    const data = {
+      username: inputs.mobile.value,
+      password: inputs.password.value,
+    };
+    dispatch(login(data));
+  };
 
   return (
     <div
@@ -37,7 +54,7 @@ const Login = () => {
       style={{ height: "100vh" }}
     >
       <div className=" p-4 shadow bg-white rounded">
-        <h1 className="pb-3 text-center">Login</h1>
+        <h1 className="pb-3 text-center">SIGN IN</h1>
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
@@ -59,25 +76,15 @@ const Login = () => {
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Remember me" />
           </Form.Group>
-          <Button variant="success" type="submit" style={{ width: "22rem" }}>
-            LOGIN
+          <Button
+            onSubmit={submitHandler}
+            variant="success"
+            type="submit"
+            style={{ width: "22rem" }}
+          >
+            Sign In
           </Button>
         </Form>
-
-        <p className="p-3 text-center">
-          New to Ajker menu?{" "}
-          <Link to="/" className="text-primary">
-            Register here
-          </Link>
-        </p>
-
-        <Button
-          variant="outline-success"
-          type="submit"
-          style={{ width: "22rem" }}
-        >
-          CONTIUNE WITH GOOGLE
-        </Button>
       </div>
     </div>
   );

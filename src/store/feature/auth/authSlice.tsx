@@ -79,76 +79,76 @@ export const authSlice = createSlice({
     // =====================
     // Signup reducer
     // =====================
-    builder
-      .addCase(signup.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(signup.fulfilled, (state, { payload }) => {
-        state.loading = false;
-        state.userId = payload.id;
-      })
-      .addCase(signup.rejected, (state, { payload }) => {
-        if (payload) state.error = payload.message;
-        state.loading = false;
-      });
+    // builder
+    //   .addCase(signup.pending, (state) => {
+    //     state.loading = true;
+    //     state.error = null;
+    //   })
+    //   .addCase(signup.fulfilled, (state, { payload }) => {
+    //     state.loading = false;
+    //     state.userId = payload.id;
+    //   })
+    //   .addCase(signup.rejected, (state, { payload }) => {
+    //     if (payload) state.error = payload.message;
+    //     state.loading = false;
+    //   });
     // =====================
     // Verify Otp reducer
     // =====================
-    builder
-      .addCase(verifyOtp.pending, (state) => {
-        state.verifyOtpLoading = true;
-        state.verifyOtpError = null;
-      })
-      .addCase(verifyOtp.fulfilled, (state) => {
-        state.verifyOtpLoading = false;
-      })
-      .addCase(verifyOtp.rejected, (state, { payload }) => {
-        if (payload) state.verifyOtpError = payload.message;
-        state.verifyOtpLoading = false;
-      });
+    // builder
+    //   .addCase(verifyOtp.pending, (state) => {
+    //     state.verifyOtpLoading = true;
+    //     state.verifyOtpError = null;
+    //   })
+    //   .addCase(verifyOtp.fulfilled, (state) => {
+    //     state.verifyOtpLoading = false;
+    //   })
+    //   .addCase(verifyOtp.rejected, (state, { payload }) => {
+    //     if (payload) state.verifyOtpError = payload.message;
+    //     state.verifyOtpLoading = false;
+    //   });
     // =====================
     // get nearby chefs reducer
     // =====================
-    builder
-      .addCase(getNearbyChefs.pending, (state) => {
-        state.getNearbyChefsLoading = true;
-        state.getNearbyChefsError = null;
-      })
-      .addCase(getNearbyChefs.fulfilled, (state, { payload }) => {
-        const nearByChefs: { [id: string]: UserModel } = {};
-        for (let i = 0; i < payload.length; i++) {
-          nearByChefs[payload[i].userId] = Object.assign({}, payload[i]);
-        }
-        state.getNearbyChefsLoading = false;
-        state.nearByChefs = nearByChefs;
-      })
-      .addCase(getNearbyChefs.rejected, (state, { payload }) => {
-        if (payload) state.getNearbyChefsError = payload.message;
-        state.getNearbyChefsLoading = false;
-      });
+    // builder
+    //   .addCase(getNearbyChefs.pending, (state) => {
+    //     state.getNearbyChefsLoading = true;
+    //     state.getNearbyChefsError = null;
+    //   })
+    //   .addCase(getNearbyChefs.fulfilled, (state, { payload }) => {
+    //     const nearByChefs: { [id: string]: UserModel } = {};
+    //     for (let i = 0; i < payload.length; i++) {
+    //       nearByChefs[payload[i].userId] = Object.assign({}, payload[i]);
+    //     }
+    //     state.getNearbyChefsLoading = false;
+    //     state.nearByChefs = nearByChefs;
+    //   })
+    //   .addCase(getNearbyChefs.rejected, (state, { payload }) => {
+    //     if (payload) state.getNearbyChefsError = payload.message;
+    //     state.getNearbyChefsLoading = false;
+    //   });
   },
 });
 
 export const { resetError, authenticate, logout } = authSlice.actions;
 
-export const selectIsLoggedIn = (state: RootState) => state.auth.isLoggedIn;
-export const getUserProfile = (state: RootState) => state.auth.user;
-export const getUserId = (state: RootState) => state.auth.userId;
-export const getSignupLoading = (state: RootState) => state.auth.loading;
-export const getSignupError = (state: RootState) => state.auth.error;
-export const getLoginLoading = (state: RootState) => state.auth.loading;
-export const getLoginError = (state: RootState) => state.auth.error;
+export const selectIsLoggedIn = (state: RootState) => state.user.isLoggedIn;
+export const getUserProfile = (state: RootState) => state.user.user;
+export const getUserId = (state: RootState) => state.user.userId;
+export const getSignupLoading = (state: RootState) => state.user.loading;
+export const getSignupError = (state: RootState) => state.user.error;
+export const getLoginLoading = (state: RootState) => state.user.loading;
+export const getLoginError = (state: RootState) => state.user.error;
 export const getVerifyOtpLoading = (state: RootState) =>
-  state.auth.verifyOtpLoading;
+  state.user.verifyOtpLoading;
 export const getVerifyOtpError = (state: RootState) =>
-  state.auth.verifyOtpError;
+  state.user.verifyOtpError;
 export const getNearbyChefsLoading = (state: RootState) =>
-  state.auth.getNearbyChefsLoading;
+  state.user.getNearbyChefsLoading;
 export const getNearbyChefsError = (state: RootState) =>
-  state.auth.getNearbyChefsError;
-export const getNearByChefs = (state: RootState) => state.auth.nearByChefs;
+  state.user.getNearbyChefsError;
+export const getNearByChefs = (state: RootState) => state.user.nearByChefs;
 export const getChefById = (id: any) => (state: RootState) =>
-  state.auth.nearByChefs[id];
+  state.user.nearByChefs[id];
 
 export default authSlice.reducer;
