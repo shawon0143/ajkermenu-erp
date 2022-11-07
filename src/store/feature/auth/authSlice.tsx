@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { getNearbyChefs, login, signup, verifyOtp } from "./auth";
-import { UserModel } from "@services/models/user.model";
+import { UserModel } from "../../../services/models/user.model";
 import { User } from "./type";
 // import localStorage from "@react-native-async-storage/async-storage";
 
